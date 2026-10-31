@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use App\Models\Cast;
+use App\Models\Film;
 use App\Models\Peran;
 use Faker\Factory as Faker;
 
@@ -15,15 +17,38 @@ class PeranSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        if (Peran::query()->exists()) {
+            return;
+        }
+
+        $filmIds = Film::query()->pluck('id');
+        if ($filmIds->isEmpty()) {
+            throw new \RuntimeException('Seed films before creating cast roles.');
+        }
+
+        if (! Cast::query()->exists()) {
+            $this->call(CastSeeder::class);
+        }
+
+        $castIds = Cast::query()->pluck('id');
+        if ($castIds->isEmpty()) {
+            throw new \RuntimeException('No cast records are available to assign to films.');
+        }
+
         $faker = Faker::create('id_ID');
-        for($loop = 1; $loop <= 300; $loop++)
-        {
-            Peran::create([
-                "film_id"    => $faker->numberBetween(1,128),
-                "cast_id"    => $faker->numberBetween(1,50),
-                "actor"      => $faker->jobTitle,
-            ]);
+        foreach ($filmIds as $filmId) {
+            foreach ($castIds->shuffle()->take(2) as $castId) {
+                Peran::create([
+                    'film_id' => $filmId,
+                    'cast_id' => $castId,
+                    'actor' => $faker->randomElement([
+                        'Pemeran utama',
+                        'Pemeran pendukung',
+                        'Protagonis',
+                        'Antagonis',
+                    ]),
+                ]);
+            }
         }
     }
 }

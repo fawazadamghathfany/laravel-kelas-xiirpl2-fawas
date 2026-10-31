@@ -64,14 +64,5 @@ return new class extends Migration
             $table->dropColumn('user_id');
             $table->dropColumn('film_id');
         });
-        // drop all tables
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('kritiks');
-        Schema::dropIfExists('perans');
-        Schema::dropIfExists('casts');
-        Schema::dropIfExists('films');
-        Schema::dropIfExists('genres');
-        Schema::dropIfExists('profiles');
-        Schema::dropIfExists('roles');
     }
 };

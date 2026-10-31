@@ -20,6 +20,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- nav -->
 @include('templates.component.navbar')
 <!-- //nav -->
+@if (session('status'))
+  <div class="container">
+    <div class="alert alert-success" role="status">{{ session('status') }}</div>
+  </div>
+@endif
 <div class="general_social_icons">
 	<nav class="social">
 		<ul>

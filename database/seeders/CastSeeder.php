@@ -15,16 +15,17 @@ class CastSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        if (Cast::query()->exists()) {
+            return;
+        }
+
         $faker = Faker::create('id_ID');
-        for($i = 1; $i <= 50; $i++){
-            // insert data ke table cast menggunakan Faker
-            \DB::table('casts')->insert([
-                'name' => $faker->name,
-                'age' => $faker->numberBetween(7,80),
+        for ($i = 1; $i <= 50; $i++) {
+            Cast::create([
+                'name' => $faker->unique()->name,
+                'age' => $faker->numberBetween(18, 80),
                 'bio' => $faker->company,
             ]);
         }
-
     }
 }

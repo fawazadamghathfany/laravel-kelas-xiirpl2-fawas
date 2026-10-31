@@ -7,6 +7,32 @@
 @endpush
 
 @section('content')
+@if ($searching)
+<div class="general">
+  <h4 class="latest-text w3_latest_text">Hasil pencarian: {{ request('search') }}</h4>
+  <div class="container">
+    <div class="w3_agile_featured_movies">
+      @forelse ($films as $film)
+        <div class="col-md-2 w3l-movie-gride-agile">
+          <a href="{{ route('movies.show', $film) }}" class="hvr-shutter-out-horizontal">
+            <img src="{{ asset($film->poster) }}" title="album-name" alt="Poster {{ $film->title }}" />
+          </a>
+          <div class="mid-1">
+            <div class="w3l-movie-text">
+              <h6><a href="{{ route('movies.show', $film) }}">{{ $film->title }}</a></h6>
+            </div>
+            <div class="mid-2"><p>{{ $film->year }}</p></div>
+          </div>
+        </div>
+      @empty
+        <p>Film tidak ditemukan.</p>
+      @endforelse
+      <div class="clearfix"></div>
+    </div>
+    {{ $films->links() }}
+  </div>
+</div>
+@else
 <!-- banner -->
 <div id="slidey" style="display:none;">
   <ul>
@@ -179,6 +205,7 @@
   </div>
 </div>
 <!-- //general -->
+@endif
 @endsection
 
 @push('scripts')
